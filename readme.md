@@ -6,7 +6,7 @@
 <br><br><br><br><br><br>
 <p align = "center">Институт естественных наук и техносферной безопасности<br>Кафедра информатики<br>Сунагатов Денис Ринатович</p>
 <br><br><br>
-<p align = "center">Лабораторная работа №1<br><strong>"Первое Android-приложение"</strong><br>01.03.02 Прикладная математика и информатика</p>
+<p align = "center">Лабораторная работа №2<br><strong>"https://github.com/flysand7/android-dev-lab2.git"</strong><br>01.03.02 Прикладная математика и информатика</p>
 <br><br><br><br><br><br><br><br><br><br><br><br>
 <p align = "right">Научный руководитель<br>
 Соболев Евгений Игоревич</p>
@@ -21,36 +21,58 @@
 
 <br>
 <h1 align = "center">Цели и задачи</h1>
-<p>Измените уведомление так, чтобы оно отображалось в верхней, а не в нижней части экрана. Для изменения способа отображения уведомления воспользуйтесь функцией setGravity класса Toast. Выберите режим Gravity.TOP.</p>
+
+Задачи:
+
+1. Добавление слушателя для TextView
+Кнопка NEXT удобна, но было бы неплохо, если бы пользователь мог переходить к следующему вопросу простым нажатием на виджетTextView. 
+Подсказка. Для TextView можно использовать слушателя View.OnClickListener, который использовался с Button, потому что класс TextView также является производным от View.
+
+2. Добавление кнопки возврата
+Добавьте кнопку для возвращения к предыдущему вопросу. Пользовательский интерфейс должен выглядеть примерно так, как показано на рис. 2.13. 
+
+3. От Button к ImageButton
+Возможно, пользовательский интерфейс будет смотреться еще лучше, если на кнопках будут отображаться только значки, как на рис. 2.14.
+Для этого оба виджета должны относиться к типу ImageButton (вместо обычного Button). ВиджетImageButton является производным от ImageView, в отличие от виджетаButton, производного от TextView. Диаграммы их наследования изображены на рис. 2.15. Атрибуты text и drawable кнопки NEXT можно заменить одним атрибутом ImageView:
 
 <h1 align = "center">Решение</h1>
 
-<p>В файл MainActivity, в метод onCreate(), проекта, я добавил следующий код</p>
+1. Чтобы добавить слушателя к TextView добавил следующий код
 
-```kotlin
-override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+```
+question_view.setOnClickListener {
+    nextQuestion()
+}
+```
 
-        true_button = findViewById(R.id.true_button)
-        false_button = findViewById(R.id.false_button)
+2. Добавив кнопки в XML лейаута, добавил следующий код:
 
+```
+prev_button = findViewById(R.id.prev_button)
+next_button = findViewById(R.id.next_button)
+next_button.setOnClickListener {
+    nextQuestion()
+}
+prev_button.setOnClickListener {
+    prevQuestion()
+}
+```
 
-        true_button.setOnClickListener{
-            val toast_value = Toast.makeText(this, R.string.correct_toast, Toast.LENGTH_SHORT)
-            toast_value.setGravity(Gravity.TOP, 0, 0)
-            toast_value.show()
-        }
+3. Изменил XML кнопок возврата и перехода к следующему вопросу:
 
-        false_button.setOnClickListener{
-            val toast_value = Toast.makeText(this, R.string.incorrect_toast, Toast.LENGTH_SHORT)
-            toast_value.setGravity(Gravity.TOP, 0, 0)
-            toast_value.show()
-        }
+```
+<ImageButton
+    android:id="@+id/prev_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/arrow_left" />
 
-
-    }
+<ImageButton
+    android:id="@+id/next_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/arrow_right" />
 ```
 
 <h1 align = "center">Вывод</h1>
-Опираясь на материал с лекции и помощь сторонних ресурсов, я научился создавать примитивное android-приложение, а также, познакомился с toast-объектами.
+Опираясь на материал с лекции и помощь сторонних ресурсов, я научился использовать ImageButton, узнал что такое модель MVC и как ей легко можно воспользоваться для написания расширяемого приложения.
