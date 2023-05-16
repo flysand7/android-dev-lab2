@@ -21,18 +21,30 @@ class MainActivity : AppCompatActivity() {
     )
     private lateinit var curQuestion: Question
     private var curQuestionIndex = 0
+    fun updateCurQuestion() {
+        curQuestion = questionArr[curQuestionIndex]
+        question_view.setText(curQuestion.question)
+        if(curQuestionIndex == 0) {
+            prev_button.setEnabled(false);
+        }
+        else if(curQuestionIndex == questionArr.count() - 1) {
+            next_button.setEnabled(false);
+        }
+        else {
+            prev_button.setEnabled(true);
+            next_button.setEnabled(true);
+        }
+    }
     fun prevQuestion() {
         curQuestionIndex -= 1
         curQuestionIndex += questionArr.count()
         curQuestionIndex %= questionArr.count()
-        curQuestion = questionArr[curQuestionIndex]
-        question_view.setText(curQuestion.question)
+        updateCurQuestion();
     }
     fun nextQuestion() {
         curQuestionIndex += 1
         curQuestionIndex %= questionArr.count()
-        curQuestion = questionArr[curQuestionIndex]
-        question_view.setText(curQuestion.question)
+        updateCurQuestion();
     }
     fun trueAnswer() {
         val toast_value = Toast.makeText(this, R.string.correct_toast, Toast.LENGTH_SHORT)
@@ -71,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
         prev_button = findViewById(R.id.prev_button)
         next_button = findViewById(R.id.next_button)
+        updateCurQuestion();
         next_button.setOnClickListener {
             nextQuestion()
         }
